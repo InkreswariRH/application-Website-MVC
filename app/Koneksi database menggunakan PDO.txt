@@ -1,0 +1,40 @@
+Koneksi ke database menggunakan PDO. 
+Jika menggunakan PDO, maka jika mau pindah ke database lain selain mysql, akan jadi lebih mudah.
+
+Untuk dapat mengakses database menggunakan PDO, ada beberapa langkah yang harus dilakukan:
+
+1. Buat variabel / property (untuk di dalam class) untuk menampung database (database handler):
+      
+      private $dbh;
+
+2. Buat variabel / property untuk menampung query database:
+      
+      private $stmt;
+
+3. Buat data source name, buat identitas server kita:
+
+      $dsn = '<jenis database>:host=<nama host>;dbname=<nama database yang digunakan>';
+
+      contoh:
+
+      $dsn = 'mysql:host=localhost;dbname=phpmvc';
+
+4. Cek apakah koneksi berhasil menggunakan try catch:
+
+      try {
+         $this->dbh = new PDO($dsn, 'root', '');
+      } catch (PDOException $e) {
+         die($e->getMessage());
+      }
+
+5. Jalankan query database:
+
+      $this->stmt = $this->dbh->prepare('query yang ingin dieksekusi');
+
+      contoh:
+      $this->stmt = $this->dbh->prepare('SELECT * FROM mahasiswa');
+      $this->stmt->execute();
+
+6. Ambil data database. Biasanya kalo menggunakan mysqli akan seperti mysqli_fetch_assoc, kalo di PDO seperti berikut:
+
+      return $this->stmt->fetchAll(PDO::FETCH_ASSOC);
